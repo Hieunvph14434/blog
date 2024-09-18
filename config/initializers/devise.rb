@@ -310,4 +310,13 @@ Devise.setup do |config|
   # When set to false, does not sign a user in automatically after their password is
   # changed. Defaults to true, so a user is signed in automatically after changing a password.
   # config.sign_in_after_change_password = true
+
+  # config session timeout default
+  config.timeout_in = 24.hours
+
+  # config session timeout remember me
+  config.remember_for = 30.days
+
+  # config confirm email timeout.
+  config.confirm_within = 2.days
 end
