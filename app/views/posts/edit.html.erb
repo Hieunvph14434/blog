@@ -1,0 +1,9 @@
+<div class="post mt-4">
+  <p style="color: green"><%= alert %></p>
+  <h1>Editing post</h1>
+  <%= render "form", post: @post, submit_text: "Update Post" %>
+  <br>
+  <div>
+    <%= link_to "Back to posts", posts_path %>
+  </div>
+</div>

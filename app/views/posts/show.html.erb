@@ -1,0 +1,29 @@
+<div class="post mt-4">
+  <div class="col img-container mb-4"><%= image_tag @thumbnailsDetail.first, alt: @post.title if @thumbnailsDetail.present? && @thumbnailsDetail.first.present? %></div>
+  <div class="px-5">
+    <%= content_tag :h1, @post.title, class: "fw-bold" %>
+    <%= content_tag :span, "By #{@post.author.name}", class: "fw-light text-body-tertiary fs-small" %>
+    <div class="mt-5">
+      <%= raw @post.content %>
+    </div>
+  </div>
+  <div class="mt-4 px-5">
+    <div class="d-flex gap-0">
+      <h3 class="col-2">READ MORE</h3>
+      <div class="col"><hr></div>
+    </div>
+    <% @posts.each_with_index do |post, index| %>
+      <%= link_to post, class: "t-decoration-none" do %>
+        <div class="d-flex" style="height: 120px">
+          <div class="col-3 overflow-hidden">
+            <%= image_tag @thumbnails[index], alt: post.title, class: "w-50 img-thumbnail-radius" if @thumbnails[index].present? %>
+          </div>
+          <div class="col">
+            <%= content_tag :h3, post.title %>
+          </div>
+        </div>
+      <% end %>
+      <hr/>
+    <% end %>
+  </div>
+</div>
