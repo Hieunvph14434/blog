@@ -8,13 +8,13 @@ class PostsController < ApplicationController
   # GET /posts or /posts.json
   def index
     @pagy, @posts = pagy(current_user.posts, limit: 6)
-    load_thumbnails(@posts, true)
+    load_thumbnails(@posts)
   end
 
   # GET /posts/1 or /posts/1.json
   def show
       @posts = Post.where(status: Post.statuses[:published]).limit(5)
-      load_thumbnails(@posts, true)
+      load_thumbnails(@posts)
   end
 
   # GET /posts/new
@@ -71,7 +71,7 @@ class PostsController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_post
       @post = Post.find(params[:id])
-      load_thumbnails([@post], action_name == 'show', action_name) if @post.cover_image
+      load_thumbnails([@post], action_name) if @post.cover_image
     end
 
     # Only allow a list of trusted parameters through.

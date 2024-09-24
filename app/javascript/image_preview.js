@@ -1,4 +1,4 @@
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('turbo:load', () => {
     const fileInput = document.querySelector('input[type="file"]');
     const previewContainer = document.getElementById('image-preview');
 
