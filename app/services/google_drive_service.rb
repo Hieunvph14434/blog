@@ -24,9 +24,12 @@ class GoogleDriveService
       file_metadata,
       upload_source: file_path,
       content_type: mime_type,
-      fields: 'id'
+      fields: 'id, thumbnailLink'
     )
-    file.id
+    {
+      id: file.id,
+      url: file.thumbnail_link
+    }
   end
 
   def get_thumbnails(file_ids)

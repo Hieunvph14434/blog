@@ -12,7 +12,7 @@
         <div class="col-4 p-2 post-item">
           <div class="border b-radius h-100 position-relative">
             <div class="w-100 mb-2 height-img">
-              <%= image_tag @thumbnails[index], alt: post.title, class: "w-100 img-thumbnail-radius" if @thumbnails[index].present? %>
+              <%= image_tag post.cover_img_url, alt: post.title, class: "w-100 img-thumbnail-radius" if post.cover_img_url.present? %>
             </div>
             <div class="row p-2">
               <%= content_tag :h4, post.title %>

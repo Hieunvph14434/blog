@@ -1,9 +1,9 @@
 module ThumbnailableHelper
     # Load image URL
-    def load_thumbnails(posts, show_no_image = false, type = nil)
+    def load_thumbnails(posts, type = nil)
       service = GoogleDriveService.new
       file_ids = posts.map do |post|
-        post.cover_image if post.cover_image.present? && (show_no_image || post.cover_image != ENV['NO_IMAGE'])
+        post.cover_image if post.cover_image.present?
       end.compact
   
       # Fetch thumbnails

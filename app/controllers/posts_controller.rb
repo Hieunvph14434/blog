@@ -8,13 +8,11 @@ class PostsController < ApplicationController
   # GET /posts or /posts.json
   def index
     @pagy, @posts = pagy(current_user.posts, limit: 6)
-    load_thumbnails(@posts, true)
   end
 
   # GET /posts/1 or /posts/1.json
   def show
       @posts = Post.where(status: Post.statuses[:published]).limit(5)
-      load_thumbnails(@posts, true)
   end
 
   # GET /posts/new
@@ -71,12 +69,11 @@ class PostsController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_post
       @post = Post.find(params[:id])
-      load_thumbnails([@post], action_name == 'show', action_name) if @post.cover_image
     end
 
     # Only allow a list of trusted parameters through.
     def post_params
-      params.require(:post).permit(:title, :content, :cover_image, :status)
+      params.require(:post).permit(:title, :content, :cover_image, :status, :cover_img_url)
     end
 
     def authorize_user!
@@ -88,14 +85,17 @@ class PostsController < ApplicationController
     def upload_cover_image
       file = post_params[:cover_image]
       file_id = ENV['NO_IMAGE']
+      file_url = nil
       
       if file
         service = GoogleDriveService.new
-        file_id = service.upload_file(file.path, file.original_filename, file.content_type)
+        rs_file = service.upload_file(file.path, file.original_filename, file.content_type)
+        file_id = rs_file[:id]
+        file_url = rs_file[:url]
       end
-
+      
       if file_id
-        @post.update(cover_image: file_id)
+        @post.update(cover_image: file_id, cover_img_url: file_url)
       else
         flash[:alert] = "Failed to upload cover image."
       end

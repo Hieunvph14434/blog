@@ -20,7 +20,7 @@
           <tr>
             <td scope="row"><%= post.id %></td>
             <td><%= post.title %></td>
-            <td><%= image_tag @thumbnails[index], alt: post.title, class: "w-75 img-thumbnail-radius" if @thumbnails[index].present? %></td>
+            <td><%= image_tag post.cover_img_url, alt: post.title, class: "w-75 img-thumbnail-radius" if post.cover_img_url.present? %></td>
             <td><%= truncate(strip_tags(post.content), length: 150) %></td>
             <td>
               <div class="d-flex justify-content-center align-items-center gap-1">

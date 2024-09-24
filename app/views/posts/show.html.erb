@@ -1,5 +1,5 @@
 <div class="post mt-4">
-  <div class="col img-container mb-4"><%= image_tag @thumbnailsDetail.first, alt: @post.title if @thumbnailsDetail.present? && @thumbnailsDetail.first.present? %></div>
+  <div class="col img-container mb-4"><%= image_tag @post.cover_img_url, alt: @post.title if @post.cover_img_url.present? %></div>
   <div class="px-5">
     <%= content_tag :h1, @post.title, class: "fw-bold" %>
     <%= content_tag :span, "By #{@post.author.name}", class: "fw-light text-body-tertiary fs-small" %>
@@ -16,7 +16,7 @@
       <%= link_to post, class: "t-decoration-none" do %>
         <div class="d-flex" style="height: 120px">
           <div class="col-3 overflow-hidden">
-            <%= image_tag @thumbnails[index], alt: post.title, class: "w-50 img-thumbnail-radius" if @thumbnails[index].present? %>
+            <%= image_tag post.cover_img_url, alt: post.title, class: "w-50 img-thumbnail-radius" if post.cover_img_url.present? %>
           </div>
           <div class="col">
             <%= content_tag :h3, post.title %>
