@@ -74,3 +74,21 @@ end
 gem "dotenv-rails", "~> 3.1"
 
 gem "devise", "~> 4.9"
+
+gem "ckeditor", "~> 5.1"
+
+gem "carrierwave", "~> 3.0"
+
+gem "mini_magick", "~> 4.13"
+
+gem "pagy", "~> 9.0"
+
+gem "google-api-client", "~> 0.53.0"
+
+gem "byebug", "~> 11.1"
+
+gem "ransack", "~> 4.2"
+
+gem "bullet", "~> 7.2"
+
+gem "parallel", "~> 1.26"
