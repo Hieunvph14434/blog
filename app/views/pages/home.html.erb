@@ -1,7 +1,31 @@
-<h1>Pages#home</h1>
-<p>Find me in app/views/pages/home.html.erb</p>
-<% if current_user %>
-  <%= link_to "Sign out", destroy_user_session_path, method: :delete, data: { turbo_method: :delete } %>
-<% else %>
-  <%= link_to "Sign in", new_user_session_path %>
-<% end %>
+<div class="mt-4 post">
+  <div class="post">
+    <%= search_form_for @q, url: root_path, method: :get do |f| %>
+      <div class="row gap-2">
+        <%= f.text_field :title_or_content_cont, placeholder: "Enter title or content", class: "form-control col" %>
+        <%= f.submit "Search", class: "btn btn-primary col-1" %>
+      </div>
+    <% end %>
+  </div>
+  <div class="">
+    <div id="posts" class="d-flex flex-wrap mb-2">
+      <% @posts.each_with_index do |post, index| %>
+        <div class="col-4 p-2 post-item">
+          <div class="border b-radius h-100 position-relative">
+            <div class="w-100 mb-2 height-img">
+              <%= image_tag post.cover_img_url, alt: post.title, class: "w-100 img-thumbnail-radius" if post.cover_img_url.present? %>
+            </div>
+            <div class="row p-2">
+              <%= content_tag :h4, post.title %>
+              <div class="mb-2"><%= truncate(strip_tags(post.content), length: 150) %></div>
+              <div class=" d-flex justify-content-end position-absolute read-more">
+                <%= link_to 'Read more', post, class: "col-4 btn btn-primary" %>
+              </div>
+            </div>
+          </div>
+        </div>
+      <% end %>
+    </div>
+    <%= render 'layouts/pagination' %>
+  </div>
+</div>

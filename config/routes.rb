@@ -1,8 +1,11 @@
 Rails.application.routes.draw do
-  devise_for :users
+  mount Ckeditor::Engine => '/ckeditor'
+  devise_for :users, controllers: {
+    registrations: 'users/registrations'
+  }
   root 'pages#home'
-  # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
-
-  # Defines the root path route ("/")
-  # root "articles#index"
+  # resources :posts
+  resources :posts do
+    resources :comments, only: [:create] # chỉ cần tạo (create) comment trong post
+  end
 end

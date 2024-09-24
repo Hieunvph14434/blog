@@ -1,5 +1,5 @@
 FROM postgres
 
-ENV POSTGRES_DB same_rails
+ENV POSTGRES_DB example_rails
 ENV POSTGRES_USER postgres
 ENV POSTGRES_PASSWORD postgres

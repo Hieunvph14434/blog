@@ -67,4 +67,30 @@ Rails.application.configure do
 
   # Uncomment if you wish to allow Action Cable access from any origin.
   # config.action_cable.disable_request_forgery_protection = true
+
+  # confirm register user
+  config.action_mailer.default_url_options = { host: ENV['MAIL_DOMAIN'] }
+  config.action_mailer.delivery_method = :smtp
+  config.action_mailer.smtp_settings = {
+    address: ENV['MAIL_ADDRESS'],
+    port: ENV['MAIL_PORT'],
+    domain: ENV['MAIL_DOMAIN'],
+    user_name: ENV['MAIL_USER_NAME'],
+    password: ENV['MAIL_PASSWORD'],
+    authentication: 'plain',
+    enable_starttls_auto: true
+  }
+
+  # Bullet configuration
+  config.after_initialize do
+    Bullet.enable = true                            # Kích hoạt Bullet
+    Bullet.alert = true                             # Hiển thị alert JavaScript trong trình duyệt
+    Bullet.bullet_logger = true                     # Ghi log vào tệp log của Bullet
+    Bullet.console = true                           # Ghi log vào console của trình duyệt
+    Bullet.rails_logger = true                      # Ghi log vào log của Rails
+    Bullet.add_footer = true                        # Hiển thị thông báo Bullet trong footer
+    # Bullet.n_plus_one_query_enable = true         # Phát hiện N+1 queries
+    Bullet.unused_eager_loading_enable = true       # Phát hiện các eager loading không cần thiết
+    Bullet.counter_cache_enable = true              # Phát hiện thiếu counter_cache
+  end
 end

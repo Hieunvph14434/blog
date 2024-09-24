@@ -1,0 +1,58 @@
+<%= javascript_include_tag 'toggle-button' %>
+<hr>
+<% if user_signed_in? %>
+<div class="mt-4 px-5">
+    <%= form_with(model: [ @post, @post.comments.build ], local: true) do |f| %>
+    <div class="field">
+        <%= f.text_area :content, placeholder: "Add a comment...", class: "form-control mb-2" %>
+    </div>
+    <div class="text-end"><%= f.submit "Post Comment", class: "btn btn-primary" %></div>
+    <% end %>
+</div>
+<div class="mt-4 px-5">
+    <% @comments.where(parent_id: nil).each do |comment| %>
+    <div class="comment">
+        <div class="bg-light p-3">
+            <div>
+                <%= comment.user.name if comment.user.present? %>
+                (<%= content_tag :span, comment.created_at.strftime("%Y-%m-%d") %>)
+            </div>
+            <%= comment.content %>
+        </div>
+
+        <!-- Button to toggle reply form -->
+        <div class="text-end" id="reply-button-<%= comment.id %>"><button class="toggle-reply-form btn btn-primary my-2" onclick="toggleReplyForm('<%= comment.id %>')">Reply</button></div>
+
+        <!-- Form to reply (initially hidden) -->
+        <div id="reply-form-<%= comment.id %>" class="reply-form my-2" style="display: none;">
+            <%= form_with(model: [ @post, comment.replies.build ], local: true) do |f| %>
+            <div class="field">
+                <%= f.text_area :content, placeholder: "Reply to this comment...", class: "form-control mb-2" %>
+            </div>
+            <%= f.hidden_field :parent_id, value: comment.id %>
+            <div class="text-end">
+                <button type="button" class="btn btn-danger" onclick="toggleReplyForm('<%= comment.id %>')">Cancel</button>
+                <%= f.submit "Reply", class: "btn btn-primary" %>
+            </div>
+            <% end %>
+        </div>
+
+        <!-- Display replies -->
+        <% comment.replies.each do |reply| %>
+            <% if reply.content %>
+                <div class="reply bg-light p-3 mb-3 ms-4">
+                    <div>
+                        <%= content_tag :span, reply.user.name, class: "fw-bold" if reply.user.present? %>
+                        (<%= content_tag :span, reply.created_at.strftime("%Y-%m-%d") %>)
+                    </div>
+                    <%= content_tag :div, reply.content %> 
+                </div>
+            <% end %>
+        <% end %>
+    </div>
+    <hr>
+    <% end %>
+</div>
+<% else %>
+  <div class="text-center"><%= link_to 'Please log in to comment.', new_user_session_path, class: "text-danger" %></div>
+<% end %>
