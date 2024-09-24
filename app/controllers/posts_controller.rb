@@ -4,6 +4,7 @@ class PostsController < ApplicationController
   before_action :authenticate_user!
   before_action :authorize_user!, only: %i[ edit update destroy ]
   skip_before_action :authenticate_user!, only: [:show]
+  before_action :set_post_with_comments_and_replies, only: :show
 
   # GET /posts or /posts.json
   def index
@@ -69,6 +70,11 @@ class PostsController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_post
       @post = Post.find(params[:id])
+    end
+
+    def set_post_with_comments_and_replies
+      @post = Post.find(params[:id])
+      @comments = @post.comments.includes(:user, replies: :user)
     end
 
     # Only allow a list of trusted parameters through.

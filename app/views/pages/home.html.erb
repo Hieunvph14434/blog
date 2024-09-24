@@ -1,9 +1,10 @@
 <div class="mt-4 post">
   <div class="post">
     <%= search_form_for @q, url: root_path, method: :get do |f| %>
-      <%= f.label :title_or_content_cont, "Search by Title or Content" %>
-      <%= f.text_field :title_or_content_cont, placeholder: "Enter title or content" %>
-      <%= f.submit "Search" %>
+      <div class="row gap-2">
+        <%= f.text_field :title_or_content_cont, placeholder: "Enter title or content", class: "form-control col" %>
+        <%= f.submit "Search", class: "btn btn-primary col-1" %>
+      </div>
     <% end %>
   </div>
   <div class="">
