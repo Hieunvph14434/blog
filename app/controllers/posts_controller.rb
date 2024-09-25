@@ -1,19 +1,17 @@
 class PostsController < ApplicationController
-  include ThumbnailableHelper
+  rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
   before_action :set_post, only: %i[ show edit update destroy ]
-  before_action :authenticate_user!
-  before_action :authorize_user!, only: %i[ edit update destroy ]
   skip_before_action :authenticate_user!, only: [:show]
   before_action :set_post_with_comments_and_replies, only: :show
 
   # GET /posts or /posts.json
   def index
-    @pagy, @posts = pagy(current_user.posts, limit: 6)
+    @pagy, @posts = pagy(current_user.posts)
   end
 
   # GET /posts/1 or /posts/1.json
   def show
-      @posts = Post.where(status: Post.statuses[:published]).limit(5)
+      @posts = Post.where(status: Post.statuses[:published]).limit(Post::LIMIT_RECENT_POSTS)
   end
 
   # GET /posts/new
@@ -70,6 +68,7 @@ class PostsController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_post
       @post = Post.find(params[:id])
+      authorize @post if %i[edit destroy].include?(action_name.to_sym)
     end
 
     def set_post_with_comments_and_replies
@@ -80,12 +79,6 @@ class PostsController < ApplicationController
     # Only allow a list of trusted parameters through.
     def post_params
       params.require(:post).permit(:title, :content, :cover_image, :status, :cover_img_url)
-    end
-
-    def authorize_user!
-      unless @post.author_id == current_user.id
-        redirect_to posts_path, alert: "You are not authorized to edit or delete this post."
-      end
     end
 
     def upload_cover_image

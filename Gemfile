@@ -92,3 +92,5 @@ gem "ransack", "~> 4.2"
 gem "bullet", "~> 7.2"
 
 gem "parallel", "~> 1.26"
+
+gem "pundit", "~> 2.4"
